@@ -1,0 +1,28 @@
+# prod：线上环境；dev：开发环境
+DevEnv: prod
+# 域名
+HostURL: 127.0.0.1
+# 端口
+HostPort: 8090
+# 日志文件
+LoggerFile: ./log/pea.log
+# 数据库
+MysqlDB: root:123456@tcp(127.0.0.1:3306)/pea_db?charset=utf8&parseTime=true
+
+# reids
+RedisDB: 127.0.0.1:6379
+
+# 阿里云配置
+AliyunOss:
+  Host: ""
+  Bucket: ""
+  Endpoint: ""
+  AccessId: ""
+  AccessSecret: ""
+
+SMTP:
+  Host: smtp.qq.com
+  Port: 25
+  Username:
+  Password:
+  SSL: true
