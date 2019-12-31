@@ -31,12 +31,12 @@ type Configs struct {
 		AccessId     string `yaml:"AccessId"`
 		AccessSecret string `yaml:"AccessSecret"`
 	} `yaml:"AliyunOss"`
-	SMTP struct{
-		Host string `yaml:"Host"`
-		Port string `yaml:"Port"`
+	SMTP struct {
+		Host     string `yaml:"Host"`
+		Port     string `yaml:"Port"`
 		Username string `yaml:"Username"`
 		Password string `yaml:"Password"`
-		SSL bool  `yaml:"SSL"`
+		SSL      bool   `yaml:"SSL"`
 	} `yaml:"SMTP"`
 }
 

@@ -2,9 +2,9 @@ package tools
 
 import (
 	"bytes"
+	"github.com/issue9/identicon"
 	"image"
 	"image/color"
-	"github.com/issue9/identicon"
 	"image/png"
 	"strconv"
 	"strings"
@@ -27,7 +27,7 @@ var (
 	identiconIns *identicon.Identicon
 )
 
-func init()  {
+func init() {
 	for _, hexColor := range avatarFrontHexColors {
 		c, _ := colorToRGB(hexColor)
 		avatarFrontColors = append(avatarFrontColors, *c)

@@ -7,30 +7,22 @@ import (
 )
 
 /*
-	接口成功
+ 请求成功
 */
 func Success(ctx *gin.Context, data interface{}) {
 	resp := make(map[string]interface{})
-	resp["errno"] = RECODE_OK
-	resp["errmsg"] = RecodeText(RECODE_OK)
+	resp["errno"] = 0
+	resp["errmsg"] = "SUCCESS"
 	resp["data"] = data
 	ctx.JSON(http.StatusOK, resp)
 }
 
 /*
-	接口失败
+ 请求失败
 */
-func CheckError(ctx *gin.Context, errno string) {
+func CheckError(ctx *gin.Context, err error, msg string) {
 	resp := make(map[string]interface{})
-	resp["errno"] = errno
-	resp["errmsg"] = RecodeText(errno)
-	ctx.JSON(http.StatusOK, resp)
-}
-
-//异常捕获报错
-func AnalysisError(ctx *gin.Context,err error,msg string)  {
-	resp := make(map[string]interface{})
-	resp["errno"] = "4890"
+	resp["errno"] = 1
 	resp["errmsg"] = errors.Wrap(err, msg).Error()
 	ctx.JSON(http.StatusOK, resp)
 }

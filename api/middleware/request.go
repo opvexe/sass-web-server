@@ -10,14 +10,14 @@ import (
 
 type DataAnalysisModel struct {
 	RequstTime string `json:"datetime"`
-	RequestURL  string `json:"url"`
+	RequestURL string `json:"url"`
 }
 
 var DataAnalysisCh chan DataAnalysisModel
 
-func init()  {
+func init() {
 	//初始化管道
-	DataAnalysisCh = make(chan DataAnalysisModel,1000)
+	DataAnalysisCh = make(chan DataAnalysisModel, 1000)
 	go HanleChannel()
 }
 
@@ -26,9 +26,9 @@ func CustomMiddleWare() func(*gin.Context) {
 	return func(context *gin.Context) {
 		//拦截崩溃
 		defer func() {
-			if err:=recover();err!=nil{
-				if tools.NormalLogger !=nil{
-					tools.NormalLogger.Error("API异常"+fmt.Sprint(err))
+			if err := recover(); err != nil {
+				if tools.NormalLogger != nil {
+					tools.NormalLogger.Error("API异常" + fmt.Sprint(err))
 				}
 				tools.AnalysisError(context, errors.New(fmt.Sprint(err)), "异常消息")
 				return
@@ -40,12 +40,11 @@ func CustomMiddleWare() func(*gin.Context) {
 	}
 }
 
-
 //上报用户活跃度
-func SendDataAnalysis(ctx *gin.Context)  {
+func SendDataAnalysis(ctx *gin.Context) {
 	//异常捕获
 	defer func() {
-		if err:=recover();err!=nil{
+		if err := recover(); err != nil {
 			tools.AnalysisError(ctx, errors.New(fmt.Sprint(err)), "异常消息")
 			return
 		}
@@ -57,14 +56,14 @@ func SendDataAnalysis(ctx *gin.Context)  {
 	DataAnalysisCh <- d
 }
 
-func HanleChannel()  {
-	for{
+func HanleChannel() {
+	for {
 		select {
-		case c := <- DataAnalysisCh:
-		fmt.Println("上报数据",c)
-		
+		case c := <-DataAnalysisCh:
+			fmt.Println("上报数据", c)
+
 		default:
-			time.Sleep(10*time.Second)
+			time.Sleep(10 * time.Second)
 		}
 	}
 }

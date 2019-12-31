@@ -12,12 +12,12 @@ import (
 )
 
 const (
-	FMT_DATE_TIME = "2006-01-02 15:04:05"
-	FMT_DATE = "2006-01-02"
-	FMT_TIME = "15:04:05"
+	FMT_DATE_TIME    = "2006-01-02 15:04:05"
+	FMT_DATE         = "2006-01-02"
+	FMT_TIME         = "15:04:05"
 	FMT_DATE_TIME_CN = "2006年01月02日 15时04分05秒"
-	FMT_DATE_CN = "2006年01月02日"
-	FMT_TIME_CN = "15时04分05秒"
+	FMT_DATE_CN      = "2006年01月02日"
+	FMT_TIME_CN      = "15时04分05秒"
 )
 
 // 是否生产环境
@@ -69,7 +69,7 @@ func IsValidatePassword(password, rePassword string) error {
 
 // MD5
 func MD5Bytes(data []byte) string {
-	h :=md5.New()
+	h := md5.New()
 	h.Write(data)
 	return hex.EncodeToString(h.Sum(nil))
 }
@@ -82,7 +82,6 @@ func IsEmpty(a interface{}) bool {
 	}
 	return v.Interface() == reflect.Zero(v.Type())
 }
-
 
 /**
  * 将时间格式换成 xx秒前，xx分钟前...

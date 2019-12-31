@@ -1,5 +1,5 @@
 # prod：线上环境；dev：开发环境
-DevEnv: prod
+DevEnv: dev
 # 域名
 HostURL: 127.0.0.1
 # 端口

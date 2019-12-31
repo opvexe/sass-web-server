@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"crypto/tls"
 	"errors"
-	"html/template"
 	"github.com/jordan-wright/email"
+	"html/template"
 	"net"
 	"net/smtp"
 	"pea-web/cmd"
@@ -40,9 +40,9 @@ var emailTemplate = `
 `
 
 // 发送邮箱
-func SendTemplateEmail(to,subject,title,content,quoteContent,url string) error {
+func SendTemplateEmail(to, subject, title, content, quoteContent, url string) error {
 	tpl, err := template.New("emailTemplate").Parse(emailTemplate)
-	if err!=nil {
+	if err != nil {
 		return err
 	}
 	var buff bytes.Buffer
@@ -52,26 +52,26 @@ func SendTemplateEmail(to,subject,title,content,quoteContent,url string) error {
 		"QuoteContent": quoteContent,
 		"Url":          url,
 	})
-	if err!=nil {
+	if err != nil {
 		return err
 	}
 	html := buff.String()
-	if err :=SendEmail(to,subject,html);err!=nil{
+	if err := SendEmail(to, subject, html); err != nil {
 		return err
 	}
 	return nil
 }
 
 //发送邮箱
-func SendEmail(to ,subject ,html string) error {
+func SendEmail(to, subject, html string) error {
 	var (
-		host = cmd.Conf.SMTP.Host
-		port = cmd.Conf.SMTP.Port
-		username = cmd.Conf.SMTP.Username
-		password = cmd.Conf.SMTP.Password
-		ssl = true
-		addr = net.JoinHostPort(host, port)
-		auth = smtp.PlainAuth("", username, password, host)
+		host      = cmd.Conf.SMTP.Host
+		port      = cmd.Conf.SMTP.Port
+		username  = cmd.Conf.SMTP.Username
+		password  = cmd.Conf.SMTP.Password
+		ssl       = true
+		addr      = net.JoinHostPort(host, port)
+		auth      = smtp.PlainAuth("", username, password, host)
 		tlsConfig = &tls.Config{
 			InsecureSkipVerify: true,
 			ServerName:         host,
@@ -84,11 +84,11 @@ func SendEmail(to ,subject ,html string) error {
 	e.HTML = []byte(html)
 
 	if ssl {
-		if err:= e.SendWithTLS(addr,auth,tlsConfig);err!=nil{
+		if err := e.SendWithTLS(addr, auth, tlsConfig); err != nil {
 			return errors.New("发送邮箱异常")
 		}
-	}else {
-		if err := e.Send(addr,auth);err!=nil{
+	} else {
+		if err := e.Send(addr, auth); err != nil {
 			return errors.New("发送邮件异常")
 		}
 	}

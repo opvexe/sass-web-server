@@ -18,12 +18,12 @@ func Register(ctx *gin.Context) {
 		Ref        string `json:"ref"`
 	}
 	err := ctx.Bind(&user)
-	if err!=nil {
+	if err != nil {
 		return
 	}
-	usr,msg:=service.UserService.Register(user.UserName, "", user.NickName, user.PassWord, user.RePassWord)
-	if usr==nil {
-		tools.CheckError(ctx,msg)
+	usr, err := service.UserService.Register(user.UserName, "", user.NickName, user.PassWord, user.RePassWord)
+	if usr == nil {
+		tools.CheckError(ctx, err, "参数错误")
 	}
-	tools.Success(ctx,usr)
+	tools.Success(ctx, usr)
 }
