@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"pea-web/api/app"
+	"pea-web/api/tools"
 	"pea-web/cmd"
-	"pea-web/tools"
 )
 
 // go run main.go -c=./pea.yaml

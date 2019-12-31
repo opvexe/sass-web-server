@@ -4,8 +4,8 @@ import (
 	"github.com/jinzhu/gorm"
 	"pea-web/api/model"
 	"pea-web/api/repositories"
+	"pea-web/api/tools"
 	"pea-web/cmd"
-	"pea-web/tools"
 )
 
 type userService struct {
@@ -26,11 +26,11 @@ func (s *userService) Register(username, email, nickname, password, repassword s
 	if err := tools.IsValidateUsername(username); err != nil {
 		return nil, tools.RECODE_PARAMERR
 	}
-	if err:=tools.IsValidatePassword(password,repassword);err!=nil {
+	if err:= tools.IsValidatePassword(password,repassword);err!=nil {
 		return nil, tools.RECODE_PARAMERR
 	}
 	if len(email)>0 {
-		if err:=tools.IsValidateEmail(email);err!=nil{
+		if err:= tools.IsValidateEmail(email);err!=nil{
 			return nil, tools.RECODE_PARAMERR
 		}
 		if s.isEmailExists(email) {	//邮箱被占用

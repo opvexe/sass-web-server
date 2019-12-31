@@ -1,15 +1,17 @@
 package app
 
 import (
+	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"github.com/gin-contrib/zap"
+	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"pea-web/api/controller"
+	"pea-web/api/tools"
 	"pea-web/cmd"
-	"pea-web/tools"
 	"syscall"
 	"time"
 )
@@ -26,27 +28,30 @@ func Start() {
 		rg.GET("/register", controller.Register)
 	}
 
+
 	host := fmt.Sprintf("%s:%s", cmd.Conf.HostURL, cmd.Conf.HostPort)
-	if err := r.Run(host); err != nil {
-		panic(err)
+	srv :=&http.Server{
+		Addr:host,
+		Handler:r,
 	}
+	 go func() {
+		 if err :=srv.ListenAndServe();err!=nil&&err!=http.ErrServerClosed{
+		 	log.Fatal("listen:",err)
+		 }
+	 }()
 
 	//优雅的关闭
 	c := make(chan os.Signal)
-	//指定关闭的信号
 	signal.Notify(c, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
-	go func() {
-		s := <-c
-		logrus.Infof("got signal [%s], exiting now", s)
-		//关闭数据库
-		if err := cmd.DB.Close(); err != nil {
-			logrus.Error("mysql service closed failed:", err)
-		}
-		//关闭reids
-		if err := cmd.RDS.Close(); err != nil {
-			logrus.Error("redis service closed failed:", err)
-		}
-		logrus.Infof("程序退出")
-		os.Exit(0)
-	}()
+	<-c
+	log.Println("shutDown server ....")
+
+	ctx,cancle := context.WithTimeout(context.Background(),3*time.Second)
+	defer cancle()
+
+	if err:=srv.Shutdown(ctx);err!=nil{
+		log.Fatal("server shutDown ...",err)
+	}
+
+	log.Println("server Exiting")
 }

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"pea-web/tools"
+	"pea-web/api/tools"
 	"time"
 )
 
@@ -27,7 +27,7 @@ func CustomMiddleWare() func(*gin.Context) {
 		//拦截崩溃
 		defer func() {
 			if err:=recover();err!=nil{
-				if tools.NormalLogger!=nil{
+				if tools.NormalLogger !=nil{
 					tools.NormalLogger.Error("API异常"+fmt.Sprint(err))
 				}
 				tools.AnalysisError(context, errors.New(fmt.Sprint(err)), "异常消息")
