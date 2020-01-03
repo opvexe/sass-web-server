@@ -1,6 +1,7 @@
 package tools
 
 import (
+    "github.com/satori/go.uuid"
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
@@ -8,6 +9,7 @@ import (
 	"reflect"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -63,7 +65,9 @@ func IsValidatePassword(password, rePassword string) error {
 	if password != rePassword {
 		return errors.New("两次输入密码不匹配")
 	}
-
+	if len(password) < 6 {
+		return errors.New("密码输入过于简单")
+	}
 	return nil
 }
 
@@ -138,4 +142,12 @@ func TimeFormat(time time.Time, layout string) string {
 // 秒时间戳
 func NowUnix() int64 {
 	return time.Now().Unix()
+}
+
+//获取uuid
+func Uuid() string {
+	u:= uuid.NewV4()
+	s := u.String()
+	s = strings.ReplaceAll(s, "-", "")
+	return s
 }

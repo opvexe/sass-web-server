@@ -11,7 +11,7 @@ import (
 */
 func Success(ctx *gin.Context, data interface{}) {
 	resp := make(map[string]interface{})
-	resp["errno"] = 0
+	resp["errno"] = 2000
 	resp["errmsg"] = "SUCCESS"
 	resp["data"] = data
 	ctx.JSON(http.StatusOK, resp)
@@ -22,7 +22,7 @@ func Success(ctx *gin.Context, data interface{}) {
 */
 func CheckError(ctx *gin.Context, err error, msg string) {
 	resp := make(map[string]interface{})
-	resp["errno"] = 1
+	resp["errno"] = 4000
 	resp["errmsg"] = errors.Wrap(err, msg).Error()
 	ctx.JSON(http.StatusOK, resp)
 }

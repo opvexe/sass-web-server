@@ -17,3 +17,6 @@ type User struct {
 	Type        int    `gorm:"not null"`
 	Description string `gorm:"type:text"`
 }
+
+//用户Token表
+type name 

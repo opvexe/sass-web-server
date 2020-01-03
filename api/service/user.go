@@ -7,6 +7,7 @@ import (
 	"pea-web/api/repositories"
 	"pea-web/api/tools"
 	"pea-web/cmd"
+	"time"
 )
 
 type userService struct {
@@ -34,11 +35,11 @@ func (s *userService) Register(username, email, nickname, password, repassword s
 		if err := tools.IsValidateEmail(email); err != nil {
 			return nil, errors.New("邮箱格式不正确")
 		}
-		if s.isEmailExists(email) { //邮箱被占用
+		if s.isEmailExists(email) {
 			return nil, errors.New("邮箱被占有")
 		}
 	}
-	if s.isUserNameExists(username) { //用户名被占用
+	if s.isUserNameExists(username) {
 		return nil, errors.New("用户名被占有")
 	}
 
@@ -88,4 +89,24 @@ func (s *userService) GetAvatar(id int) (string, error) {
 		return "", err
 	}
 	return tools.UploadImage(avatarBytes)
+}
+
+//登录
+func (s *userService) Login(username ,password string) (*model.User, error) {
+	if len(username) == 0 {
+		return nil,errors.New("用户名/邮箱不能为空")
+	}
+	if len(password) == 0 {
+		return nil,errors.New("密码不能为空")
+	}
+	if s.isUserNameExists(username) {
+		return nil, errors.New("用户名被占有")
+	}
+}
+
+//获取token
+func (s *userService) Generate (id int)  {
+	token  := tools.Uuid()
+	expiredAt := time.Now().Add(time.Hour*24)  //1天后过期
+	userToken :=
 }
