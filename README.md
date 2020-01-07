@@ -1,4 +1,4 @@
-### 1.docker-compose 安装过程中2.0~3.0存在的问题
+## 1.1docker-compose 安装过程中2.0~3.0存在的问题
 
 ![截图](./images/2019-12-20-1.png)
 
@@ -42,3 +42,13 @@ $ rm -rf /usr/lib/python2.7/dist-packages/OpenSSL
 $ rm -rf /usr/lib/python2.7/dist-packages/pyOpenSSL-0.15.1.egg-info
 $ sudo pip install pyopenssl
 ```
+
+## 1.2 docker 制作镜像
+
+```shell
+# 制作镜像
+$ docker build -t 镜像名:tag . 
+# 运行镜像
+$ docker run -itd --name 容器名 -p 宿主机port:容器port 镜像名
+```
+
