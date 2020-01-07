@@ -9,6 +9,6 @@ WORKDIR /tmp/
 # RUN
 RUN chmod +x music-web-go
 # 启动容器运行的第一条命令
-ENTRYPOINT ["./tmp/music-web-go"]
+ENTRYPOINT ["/tmp/music-web-go"]
 # 对外端口
 EXPOSE 9092
