@@ -1,6 +1,6 @@
 ### 1.docker-compose 安装过程中2.0~3.0存在的问题
 
-![2020-01-02 15-35-39屏幕截图](./images/2020-01-02 15-35-39屏幕截图.png)
+![截图](./images/2019-12-20-1.png)
 
 #### 1.1 可能问题 
 
@@ -21,7 +21,7 @@ $ sudo pip install docker-compose --ignore -installed request
 
 #### 1.2 可能存在问题
 
-![2020-01-02 15-36-49屏幕截图](./images/2020-01-02 15-36-49屏幕截图.png)
+![截图](./images/2019-12-20-2.png)
 
 ```shell
 , line 97, in <module>
