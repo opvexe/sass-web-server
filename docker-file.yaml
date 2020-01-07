@@ -1,0 +1,14 @@
+# 基于基础镜像
+FROM golang:1.13.5-stretch
+# 镜像制作者
+LABEL maintainer="taoshumin_vendor@sensetime.com"
+# 宿主机目录拷贝
+COPY ["sass-pc","/workspace/go/src/sass-pc"]
+# 指定工作目录
+WORKDIR /workspace/go/src/sass-pc
+# 编译镜像
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOARM=6 go build -ldflags '-w -s' -o ./sass-pc .
+# 指定容器运行（容器启动的第一条命令）
+ENTRYPOINT ["./workspace/go/src/sass-pc/server"]
+# 对外开放的端口
+EXPOSE 5000
