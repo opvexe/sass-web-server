@@ -42,3 +42,17 @@ func (r *userRepository) Create(db *gorm.DB, user *model.User) error {
 func (r *userRepository) UpdataUpAvatar(db *gorm.DB, id int, avatar string) error {
 	return db.Model(new(model.User)).Where("id=?", id).Update("avatar", avatar).Error
 }
+
+//第三方查询
+func (r *userRepository) Get(db *gorm.DB, id int64) *model.User {
+	var user model.User
+	if err := db.Find(&user, "id=?", id); err != nil {
+		return nil
+	}
+	return &user
+}
+
+//更新用户
+func (r *userRepository) Updata(db *gorm.DB, id int64, name string, value interface{}) error {
+	return db.Model(new(model.User)).Where("id=?", id).Update(name, value).Error
+}

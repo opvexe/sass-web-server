@@ -2,9 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"pea-web/api/model"
+	"pea-web/api/plus"
 	"pea-web/api/service"
-	"pea-web/api/tools"
 )
 
 /*
@@ -22,11 +21,11 @@ func Register(ctx *gin.Context) {
 		return
 	}
 	usr, err := service.UserService.Register(user.UserName, "", user.NickName, user.PassWord, user.RePassWord)
-	if usr == nil {
-		tools.CheckError(ctx, err, "参数错误")
+	if err != nil {
+		plus.RespError(ctx, err)
 		return
 	}
-	tools.Success(ctx, usr)
+	plus.RespSuccess(ctx, usr)
 }
 
 //用户密码登录
@@ -39,10 +38,10 @@ func Login(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
-
-}
-
-//登录成功后生成token
-func GenerateToken(user *model.User, ref string) {
-
+	usr, err := service.UserService.Login(user.UserName, user.PassWord)
+	if err != nil {
+		plus.RespError(ctx, err)
+		return
+	}
+	plus.RespSuccess(ctx, usr)
 }

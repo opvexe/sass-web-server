@@ -84,6 +84,10 @@ func initDB() error {
 	db.SingularTable(true)             //默认表名单数
 	db.LogMode(true)
 	DB = db
+	//设置数据库前缀
+	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+		return "t_" + defaultTableName
+	}
 	return db.AutoMigrate(model.Model...).Error
 }
 

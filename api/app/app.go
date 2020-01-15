@@ -3,14 +3,12 @@ package app
 import (
 	"context"
 	"fmt"
-	"github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"pea-web/api/controller"
-	"pea-web/api/tools"
+	"pea-web/api/middleware"
 	"pea-web/cmd"
 	"syscall"
 	"time"
@@ -18,24 +16,14 @@ import (
 
 // 启动
 func Start() {
-	r := gin.Default()
-	//日志中间件
-	r.Use(ginzap.Ginzap(tools.NormalLogger, time.RFC3339, true))
-	r.Use(ginzap.RecoveryWithZap(tools.NormalLogger, true))
-	//分组
-	rg := r.Group("/api/v1.0")
-	{
-		rg.GET("/register", controller.Register)
-	}
-
 	host := fmt.Sprintf("%s:%s", cmd.Conf.HostURL, cmd.Conf.HostPort)
 	srv := &http.Server{
 		Addr:    host,
-		Handler: r,
+		Handler: initWithApp(),
 	}
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatal("listen:", err)
+			fmt.Println("服务监听:", err)
 		}
 	}()
 
@@ -43,12 +31,40 @@ func Start() {
 	c := make(chan os.Signal)
 	signal.Notify(c, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
 	<-c
-	log.Println("shutDown server ....")
+	fmt.Println("服务正在关闭中...")
 
 	ctx, cancle := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancle()
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatal("server shutDown ...", err)
+		fmt.Println("服务关闭:", err)
 	}
-	log.Println("server Exiting")
+	fmt.Println("服务退出...")
+}
+
+func initWithApp() *gin.Engine {
+	app := gin.Default()
+
+	////日志中间件
+	//r.Use(ginzap.Ginzap(tools.NormalLogger, time.RFC3339, true))
+	//r.Use(ginzap.RecoveryWithZap(tools.NormalLogger, true))
+
+	//错误拦截
+	app.Use(middleware.RecoveryMiddleware())
+
+	initUserRouter(app)
+
+	app.NoRoute(func(context *gin.Context) {
+		fmt.Println("没有找到对应的路由")
+	})
+
+	return app
+}
+
+func initUserRouter(app *gin.Engine) {
+
+	rg := app.Group("/api")
+
+	{
+		rg.GET("/register", controller.Register)
+	}
 }
