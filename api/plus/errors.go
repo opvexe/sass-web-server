@@ -2,6 +2,7 @@ package plus
 
 // 系统错误定义
 var (
+	PE_NotFoundRouter    = NewWrapResponse(404, "路径不存在", 404)
 	PE_ServerError = NewWrapResponse(500, "服务器发生错误", 500)
 )
 

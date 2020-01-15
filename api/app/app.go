@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"pea-web/api/controller"
 	"pea-web/api/middleware"
+	"pea-web/api/plus"
 	"pea-web/cmd"
 	"syscall"
 	"time"
@@ -54,7 +55,7 @@ func initWithApp() *gin.Engine {
 	initUserRouter(app)
 
 	app.NoRoute(func(context *gin.Context) {
-		fmt.Println("没有找到对应的路由")
+		plus.RespError(context,plus.PE_NotFoundRouter)
 	})
 
 	return app
