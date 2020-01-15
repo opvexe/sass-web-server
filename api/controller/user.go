@@ -30,19 +30,19 @@ func Register(ctx *gin.Context) {
 }
 
 //用户密码登录
-func Login(ctx *gin.Context)  {
-	var user struct{
-		UserName   string `json:"username" form:"username"`
-		PassWord   string `json:"password" form:"password"`
+func Login(ctx *gin.Context) {
+	var user struct {
+		UserName string `json:"username" form:"username"`
+		PassWord string `json:"password" form:"password"`
 	}
-	err:=ctx.Bind(&user)
-	if err!=nil {
+	err := ctx.Bind(&user)
+	if err != nil {
 		return
 	}
 
 }
 
 //登录成功后生成token
-func GenerateToken(user *model.User,ref string)  {
+func GenerateToken(user *model.User, ref string) {
 
 }

@@ -7,7 +7,6 @@ import (
 	"pea-web/api/repositories"
 	"pea-web/api/tools"
 	"pea-web/cmd"
-	"time"
 )
 
 type userService struct {
@@ -106,7 +105,5 @@ func (s *userService) Login(username ,password string) (*model.User, error) {
 
 //获取token
 func (s *userService) Generate (id int)  {
-	token  := tools.Uuid()
-	expiredAt := time.Now().Add(time.Hour*24)  //1天后过期
-	userToken :=
+
 }

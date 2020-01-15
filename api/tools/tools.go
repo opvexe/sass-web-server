@@ -1,10 +1,10 @@
 package tools
 
 import (
-    "github.com/satori/go.uuid"
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
+	"github.com/satori/go.uuid"
 	"pea-web/cmd"
 	"reflect"
 	"regexp"
@@ -146,7 +146,7 @@ func NowUnix() int64 {
 
 //获取uuid
 func Uuid() string {
-	u:= uuid.NewV4()
+	u := uuid.NewV4()
 	s := u.String()
 	s = strings.ReplaceAll(s, "-", "")
 	return s
