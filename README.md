@@ -54,7 +54,7 @@ $ docker build -t 镜像名:tag .
 $ docker run -itd --name 容器名 -p 宿主机port:容器port 镜像名
 ```
 
-#### 1.3 直接删除所有镜像或容器
+#### 1.2.1 直接删除所有镜像或容器
 
 ```shell
 # 直接删除所有镜像
@@ -67,6 +67,8 @@ docker rmi `docker images | grep xxxxx | awk '{print $3}'`
 # 按条件筛选之后删除容器
 docker rm `docker ps -a | grep xxxxx | awk '{print $1}'`
 ```
+
+
 
 
 
