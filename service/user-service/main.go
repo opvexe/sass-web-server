@@ -38,6 +38,8 @@ func main() {
 	srv := micro.NewService(
 		micro.Name("go.micro.srv.user"),
 		micro.Version("latest"),
+		micro.RegisterTTL(time.Second*15),
+		micro.RegisterInterval(time.Second*10),
 		micro.Registry(regist),
 		micro.WrapHandler(prometheus.NewHandlerWrapper()),// 基于 prometheus 采集监控指标数据
 	)
