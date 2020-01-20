@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package go.micro.srv.user;
+
+service User {
+	rpc Create(Request) returns (Response) {};
+	rpc Auth(Request) returns (Token) {};
+}
+
+message Request {
+	string id = 1;
+	string name = 2;
+	string email = 3;
+	string password = 4;
+}
+
+message Response {
+	Request user = 1;
+}
+
+message Token {
+	string token = 1;
+	bool valid = 2;
+}

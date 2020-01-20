@@ -1,9 +1,3 @@
-# 版本
-version: "3"
-# 服务
-services: 
-  sass-pc-server:
-    image: sass-pc-server:1.0
-    restart: always
-    ports: 
-      - 9000:5000
+version: "3.3"
+services:
+  sass-user-service:
