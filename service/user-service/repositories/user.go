@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"github.com/jinzhu/gorm"
-	"pea-web/api/model"
+	"pea-web/service/user-service/model"
 )
 
 type userRepository struct {

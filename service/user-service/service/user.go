@@ -2,11 +2,10 @@ package service
 
 import (
 	"github.com/jinzhu/gorm"
-	"pea-web/api/model"
+	"pea-web/service/user-service/model"
 	"pea-web/api/plus"
-	"pea-web/api/repositories"
+	"pea-web/service/user-service/repositories"
 	"pea-web/api/tools"
-	"pea-web/cmd"
 	"strings"
 	"time"
 )
