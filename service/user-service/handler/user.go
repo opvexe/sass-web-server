@@ -8,12 +8,11 @@ import (
 
 type User struct{}
 
-
 //注册用户
 func (e *User) MicroRegist(ctx context.Context, req *user.RegistRequest, rsp *user.RegistResponse) error {
 
-	_, err := service.UserService.Register(req.UserName,req.Email,req.NickName,req.Password,req.PasswordAgain)
-	if err!=nil {
+	_, err := service.UserService.Register(req.UserName, req.Email, req.NickName, req.Password, req.PasswordAgain)
+	if err != nil {
 		rsp.Code = 450
 		rsp.Message = "注册用户失败"
 		return err
@@ -27,7 +26,7 @@ func (e *User) MicroRegist(ctx context.Context, req *user.RegistRequest, rsp *us
 func (e *User) MicroLogin(ctx context.Context, req *user.LoginRequest, rsp *user.LoginResponse) error {
 
 	usr, err := service.UserService.Login(req.UserName, req.Password)
-	if err!=nil {
+	if err != nil {
 		rsp.Code = 451
 		rsp.Message = "用户登录失败"
 	}

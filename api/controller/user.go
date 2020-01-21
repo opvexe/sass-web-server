@@ -1,8 +1,14 @@
 package controller
 
 import (
+	"errors"
+	"github.com/Allenxuxu/microservices/lib/wrapper/tracer/opentracing/gin2micro"
 	"github.com/gin-gonic/gin"
+	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/registry"
+	"github.com/micro/go-micro/registry/etcd"
 	"pea-web/api/plus"
+	upb "pea-web/api/proto/user"
 	"pea-web/api/service"
 )
 
@@ -20,14 +26,32 @@ func Register(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
-	//ctx, ok := gin2micro.ContextWithSpan(ctx) 微服务调用
-
-	usr, err := service.UserService.Register(user.UserName, "", user.NickName, user.PassWord, user.RePassWord)
-	if err != nil {
-		plus.RespError(ctx, err)
+	c, ok := gin2micro.ContextWithSpan(ctx)
+	if !ok {
+		plus.RespError(ctx, errors.New("Grpc调用失败"))
 		return
 	}
-	plus.RespSuccess(ctx, usr)
+
+	regist := etcd.NewRegistry(func(op *registry.Options) {
+		op.Addrs = []string{
+			"http://127.0.0.1:2379", "http://127.0.0.1:2380",
+		}
+	})
+	srv := micro.NewService(
+		micro.Registry(regist),
+	)
+	client := upb.NewUserService("go.micro.srv.user", srv.Client())
+	if resp, err := client.MicroRegist(c, &upb.RegistRequest{
+		UserName:      user.UserName,
+		Email:         "",
+		NickName:      user.NickName,
+		Password:      user.PassWord,
+		PasswordAgain: user.RePassWord,
+	}); err == nil {
+		plus.RespSuccess(ctx, resp)
+		return
+	}
+	plus.RespError(ctx, errors.New("Grpc调用失败"))
 }
 
 //用户密码登录
