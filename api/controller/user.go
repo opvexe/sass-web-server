@@ -20,6 +20,8 @@ func Register(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
+	//ctx, ok := gin2micro.ContextWithSpan(ctx) 微服务调用
+
 	usr, err := service.UserService.Register(user.UserName, "", user.NickName, user.PassWord, user.RePassWord)
 	if err != nil {
 		plus.RespError(ctx, err)

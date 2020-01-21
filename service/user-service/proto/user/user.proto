@@ -3,22 +3,41 @@ syntax = "proto3";
 package go.micro.srv.user;
 
 service User {
-	rpc Create(Request) returns (Response) {};
-	rpc Auth(Request) returns (Token) {};
+	rpc MicroRegist(RegistRequest) returns (RegistResponse){}; // 注册用户
+	rpc MicroLogin(LoginRequest) returns (LoginResponse){};
 }
 
-message Request {
-	string id = 1;
-	string name = 2;
-	string email = 3;
-	string password = 4;
+message RegistRequest{
+	string user_name = 1; //用户名
+	string email = 2; //邮箱
+	string nick_name = 3; //别名
+	string password = 4; //密码
+	string password_again = 5; //确认密码
 }
 
-message Response {
-	Request user = 1;
+message RegistResponse{
+	int32 code = 1 ; //状态码
+	string message = 2 ; //返回状态
 }
 
-message Token {
-	string token = 1;
-	bool valid = 2;
+message LoginRequest{
+	string user_name = 1 ; //用户名
+	string password  = 2 ; //密码
+}
+
+message Account {
+	int32  id  = 1 ;	//用户id
+	string username =2 ;	//用户名
+	string email = 3;	//邮箱
+	string nickname = 4;	//别名
+	string avatar = 5;	//头像
+	int32 status = 6;	//状态
+	string roles = 7;	//角色
+	int32  type  = 8;	//类型
+}
+
+message LoginResponse{
+	int32  code  = 1; // 状态码
+	string message = 2 ; //返回状态
+	Account data = 3 ;// 返回数据
 }

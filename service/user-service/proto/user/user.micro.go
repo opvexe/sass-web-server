@@ -34,8 +34,8 @@ var _ server.Option
 // Client API for User service
 
 type UserService interface {
-	Create(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
-	Auth(ctx context.Context, in *Request, opts ...client.CallOption) (*Token, error)
+	MicroRegist(ctx context.Context, in *RegistRequest, opts ...client.CallOption) (*RegistResponse, error)
+	MicroLogin(ctx context.Context, in *LoginRequest, opts ...client.CallOption) (*LoginResponse, error)
 }
 
 type userService struct {
@@ -56,9 +56,9 @@ func NewUserService(name string, c client.Client) UserService {
 	}
 }
 
-func (c *userService) Create(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
-	req := c.c.NewRequest(c.name, "User.Create", in)
-	out := new(Response)
+func (c *userService) MicroRegist(ctx context.Context, in *RegistRequest, opts ...client.CallOption) (*RegistResponse, error) {
+	req := c.c.NewRequest(c.name, "User.MicroRegist", in)
+	out := new(RegistResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -66,9 +66,9 @@ func (c *userService) Create(ctx context.Context, in *Request, opts ...client.Ca
 	return out, nil
 }
 
-func (c *userService) Auth(ctx context.Context, in *Request, opts ...client.CallOption) (*Token, error) {
-	req := c.c.NewRequest(c.name, "User.Auth", in)
-	out := new(Token)
+func (c *userService) MicroLogin(ctx context.Context, in *LoginRequest, opts ...client.CallOption) (*LoginResponse, error) {
+	req := c.c.NewRequest(c.name, "User.MicroLogin", in)
+	out := new(LoginResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -79,14 +79,14 @@ func (c *userService) Auth(ctx context.Context, in *Request, opts ...client.Call
 // Server API for User service
 
 type UserHandler interface {
-	Create(context.Context, *Request, *Response) error
-	Auth(context.Context, *Request, *Token) error
+	MicroRegist(context.Context, *RegistRequest, *RegistResponse) error
+	MicroLogin(context.Context, *LoginRequest, *LoginResponse) error
 }
 
 func RegisterUserHandler(s server.Server, hdlr UserHandler, opts ...server.HandlerOption) error {
 	type user interface {
-		Create(ctx context.Context, in *Request, out *Response) error
-		Auth(ctx context.Context, in *Request, out *Token) error
+		MicroRegist(ctx context.Context, in *RegistRequest, out *RegistResponse) error
+		MicroLogin(ctx context.Context, in *LoginRequest, out *LoginResponse) error
 	}
 	type User struct {
 		user
@@ -99,10 +99,10 @@ type userHandler struct {
 	UserHandler
 }
 
-func (h *userHandler) Create(ctx context.Context, in *Request, out *Response) error {
-	return h.UserHandler.Create(ctx, in, out)
+func (h *userHandler) MicroRegist(ctx context.Context, in *RegistRequest, out *RegistResponse) error {
+	return h.UserHandler.MicroRegist(ctx, in, out)
 }
 
-func (h *userHandler) Auth(ctx context.Context, in *Request, out *Token) error {
-	return h.UserHandler.Auth(ctx, in, out)
+func (h *userHandler) MicroLogin(ctx context.Context, in *LoginRequest, out *LoginResponse) error {
+	return h.UserHandler.MicroLogin(ctx, in, out)
 }

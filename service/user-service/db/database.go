@@ -23,4 +23,3 @@ func CreateConnection() (*gorm.DB, error) {
 		),
 	)
 }
-

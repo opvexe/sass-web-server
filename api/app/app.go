@@ -3,7 +3,11 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/Allenxuxu/microservices/lib/tracer"
+	"github.com/Allenxuxu/microservices/lib/wrapper/tracer/opentracing/gin2micro"
 	"github.com/gin-gonic/gin"
+	"github.com/opentracing/opentracing-go"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -17,6 +21,15 @@ import (
 
 // 启动
 func Start() {
+	//jaeger分布式链路追踪
+	gin2micro.SetSamplingFrequency(50) //设置采样率
+	t, io, err := tracer.NewTracer("pea.web.gin.api", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer io.Close()
+	opentracing.SetGlobalTracer(t) //设置全局追踪
+
 	host := fmt.Sprintf("%s:%s", cmd.Conf.HostURL, cmd.Conf.HostPort)
 	srv := &http.Server{
 		Addr:    host,
@@ -52,10 +65,13 @@ func initWithApp() *gin.Engine {
 	//错误拦截
 	app.Use(middleware.RecoveryMiddleware())
 
+	//jaeger链路追踪
+	app.Use(gin2micro.TracerWrapper)
+
 	initUserRouter(app)
 
 	app.NoRoute(func(context *gin.Context) {
-		plus.RespError(context,plus.PE_NotFoundRouter)
+		plus.RespError(context, plus.PE_NotFoundRouter)
 	})
 
 	return app
